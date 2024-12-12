@@ -1,10 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Publishy.Application\Publishy.Application.csproj" />
-    <ProjectReference Include="..\Publishy.Infrastructure\Publishy.Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>

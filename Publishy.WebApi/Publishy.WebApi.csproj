@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Publishy.ServiceDefaults\Publishy.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\src\Publishy.Api\Publishy.Api.csproj" />
+    <ProjectReference Include="..\src\Publishy.Infrastructure\Publishy.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
