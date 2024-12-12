@@ -15,11 +15,11 @@ public record CreateProjectCommand(
     string BrandTone,
     string Website,
     SocialMedia[] SocialMedias
-) : Request<Result<Project>>;
+) : Request<Result<ProjectResponse>>;
 
 public record SocialMedia(string Platform, int Frequency, string Timezone);
 
-public class CreateProjectCommandHandler : MediatorRequestHandler<CreateProjectCommand, Result<Project>>
+public class CreateProjectCommandHandler : MediatorRequestHandler<CreateProjectCommand, Result<ProjectResponse>>
 {
     private readonly IProjectRepository _projectRepository;
 
@@ -28,7 +28,7 @@ public class CreateProjectCommandHandler : MediatorRequestHandler<CreateProjectC
         _projectRepository = projectRepository;
     }
 
-    protected override async Task<Result<Project>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
+    protected override async Task<Result<ProjectResponse>> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
         var targetAudience = new TargetAudience(
             request.TargetAudience.Type,
@@ -51,9 +51,9 @@ public class CreateProjectCommandHandler : MediatorRequestHandler<CreateProjectC
         );
 
         if (!projectResult.IsSuccess)
-            return projectResult;
+            return Result.Error(projectResult.Errors.ToArray());
 
         var project = await _projectRepository.AddAsync(projectResult.Value, cancellationToken);
-        return Result.Success(project);
+        return Result.Success((ProjectResponse)project);
     }
 }

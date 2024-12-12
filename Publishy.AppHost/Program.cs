@@ -1,8 +1,13 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 
-var db = builder.AddMongoDB("mongodb");
-db.AddDatabase("publishy-db");
+var db = builder.AddMongoDB("mongodb")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithMongoExpress()
+    .WithDataVolume();
+
+var backenddb = db.AddDatabase("publishy-db");
+
 
 var redis = builder.AddRedis("redis");
 
@@ -11,7 +16,7 @@ var redis = builder.AddRedis("redis");
 //    : builder.AddConnectionString("servicebus");
 
 builder.AddProject<Projects.Publishy_WebApi>("publishy-webapi")
-    .WithReference(db)
+    .WithReference(backenddb)
     //.WithReference(serviceBus)
     .WithReference(redis);
 

@@ -42,7 +42,7 @@ public static class ProjectEndpoints
         .WithName("CreateProject")
         .WithSummary("Create a new project")
         .WithDescription("Creates a new project with the provided information.")
-        .Produces<Result<ProjectResponse>>(StatusCodes.Status201Created)
+        .Produces<Result<Application.UseCases.Commands.CreateProject.ProjectResponse>>(StatusCodes.Status201Created)
         .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
         .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 

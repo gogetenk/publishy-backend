@@ -1,7 +1,7 @@
 ﻿using MassTransit;
-using Publishy.Api.Endpoints;
+using Publishy.Application.UseCases.Queries.GetProjects;
 
-namespace CryptoCard.ApiService.MassTransit;
+namespace Publishy.WebApi;
 
 public static class MassTransitExtensions
 {
@@ -9,7 +9,7 @@ public static class MassTransitExtensions
     {
         services.AddMediator(cfg =>
         {
-            cfg.AddConsumers(typeof(ProjectEndpoints).Assembly);
+            cfg.AddConsumers(typeof(GetProjectsQuery).Assembly);
             //cfg.ConfigureMediator((context, mcfg) =>
             //{
             //    mcfg.UseSendFilter(typeof(LoggingFilter<>), context);

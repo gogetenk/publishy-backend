@@ -1,18 +1,39 @@
+using MassTransit;
 using Publishy.Api.Endpoints;
 using Publishy.Infrastructure;
+using Publishy.WebApi;
 
-var builder = WebApplication.CreateBuilder(args);
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
-builder.Services.AddOpenApi();
+    builder.AddServiceDefaults();
 
-builder.AddInfrastructure();
+    builder.Services.AddProblemDetails();
+    builder.Services.AddOpenApi();
+    builder.Services.AddMassTransit();
+    builder.ConfigureSwagger();
 
-var app = builder.Build();
+    builder.AddInfrastructure();
 
-app.MapDefaultEndpoints();
-app.MapProjectEndpoints();
-app.MapOpenApi();
-app.UseHttpsRedirection();
+    var app = builder.Build();
 
-app.Run();
+    app.UseSwaggerAndUI();
+    app.MapOpenApi();
+    app.UseHttpsRedirection();
+    app.MapDefaultEndpoints();
+    app.MapProjectEndpoints();
+
+    app.Run();
+}
+catch (Exception exc)
+{
+    throw;
+}
+
+public partial class Program
+{
+    protected Program()
+    {
+    }
+} // Needed for IntegrationTests

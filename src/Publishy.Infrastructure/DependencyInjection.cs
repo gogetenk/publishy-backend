@@ -13,7 +13,7 @@ public static class DependencyInjection
     public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-        builder.AddMongoDBClient("mongodb");
+        builder.AddMongoDBClient("publishy-db");
 
         BsonSerializer.RegisterIdGenerator(typeof(Guid), CombGuidGenerator.Instance);
 

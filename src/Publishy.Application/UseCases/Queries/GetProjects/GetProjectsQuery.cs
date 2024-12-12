@@ -1,6 +1,7 @@
 ﻿using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Interfaces;
+using Publishy.Application.UseCases.Commands.CreateProject;
 
 namespace Publishy.Application.UseCases.Queries.GetProjects;
 

@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Publishy.ServiceDefaults\Publishy.ServiceDefaults.csproj" />
     <ProjectReference Include="..\src\Publishy.Api\Publishy.Api.csproj" />
     <ProjectReference Include="..\src\Publishy.Infrastructure\Publishy.Infrastructure.csproj" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.1.0" />
   </ItemGroup>
 
 </Project>
