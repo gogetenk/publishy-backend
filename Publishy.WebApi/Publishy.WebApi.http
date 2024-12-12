@@ -1,0 +1,6 @@
+@Publishy.WebApi_HostAddress = http://localhost:5089
+
+GET {{Publishy.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
