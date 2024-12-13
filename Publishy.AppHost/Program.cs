@@ -8,6 +8,8 @@ var db = builder.AddMongoDB("mongodb")
 
 var backenddb = db.AddDatabase("publishy-db");
 
+var rmq = builder.AddRabbitMQ("rmq")
+    .WithManagementPlugin();
 
 var redis = builder.AddRedis("redis");
 
@@ -17,6 +19,7 @@ var redis = builder.AddRedis("redis");
 
 builder.AddProject<Projects.Publishy_WebApi>("publishy-webapi")
     .WithReference(backenddb)
+    .WithReference(rmq)
     //.WithReference(serviceBus)
     .WithReference(redis);
 

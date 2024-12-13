@@ -23,6 +23,8 @@ try
     app.UseHttpsRedirection();
     app.MapDefaultEndpoints();
     app.MapProjectEndpoints();
+    app.MapPostEndpoints();
+    app.MapMarketingPlanEndpoints();
 
     app.Run();
 }

@@ -1,4 +1,4 @@
-﻿using Publishy.Application.Domain.ValueObjects;
+using Publishy.Application.Domain.ValueObjects;
 
 namespace Publishy.Application.UseCases.Commands.CreateProject;
 

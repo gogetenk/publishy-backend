@@ -1,4 +1,4 @@
-﻿using MongoDB.Driver;
+using MongoDB.Driver;
 using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Interfaces;
 

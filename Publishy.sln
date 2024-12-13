@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publishy.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BE", "BE", "{A2E6FA8E-D3B0-48F6-870F-AFCC08C3727D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publishy.IntegrationTests", "tests\Publishy.IntegrationTests\Publishy.IntegrationTests.csproj", "{40D025D3-5F2C-41C5-AA5C-CC47B3A3FD05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{B40815B0-51B6-4BED-BA5F-79D1A0E3F1AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40815B0-51B6-4BED-BA5F-79D1A0E3F1AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40815B0-51B6-4BED-BA5F-79D1A0E3F1AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D025D3-5F2C-41C5-AA5C-CC47B3A3FD05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D025D3-5F2C-41C5-AA5C-CC47B3A3FD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D025D3-5F2C-41C5-AA5C-CC47B3A3FD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D025D3-5F2C-41C5-AA5C-CC47B3A3FD05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

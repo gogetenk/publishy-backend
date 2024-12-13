@@ -1,4 +1,4 @@
-﻿using Ardalis.Result;
+using Ardalis.Result;
 using Ardalis.Result.AspNetCore;
 using MassTransit;
 using MassTransit.Mediator;
@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Publishy.Application.UseCases.Commands.CreateProject;
+using Publishy.Application.UseCases.Commands.DeleteProject;
+using Publishy.Application.UseCases.Commands.UpdateProject;
+using Publishy.Application.UseCases.Commands.UpdateProjectStatus;
+using Publishy.Application.UseCases.Queries.GetActiveProjects;
+using Publishy.Application.UseCases.Queries.GetProjectById;
 using Publishy.Application.UseCases.Queries.GetProjects;
 
 namespace Publishy.Api.Endpoints;
@@ -46,76 +51,76 @@ public static class ProjectEndpoints
         .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
         .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-        //// GET /projects/active
-        //group.MapGet("/active", async (IMediator mediator) =>
-        //{
-        //    var query = new GetActiveProjectsQuery();
-        //    var response = await mediator.SendRequest(query);
-        //    return response.ToMinimalApiResult();
-        //})
-        //.WithName("GetActiveProjects")
-        //.WithSummary("Retrieve the list of active projects")
-        //.WithDescription("Fetches only active projects.")
-        //.Produces<Result<ProjectResponse[]>>()
-        //.Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        // GET /projects/active
+        group.MapGet("/active", async ([FromServices] IMediator mediator) =>
+        {
+            var query = new GetActiveProjectsQuery();
+            var response = await mediator.SendRequest(query);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("GetActiveProjects")
+        .WithSummary("Retrieve the list of active projects")
+        .WithDescription("Fetches only active projects.")
+        .Produces<Result<ProjectResponse[]>>()
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-        //// GET /projects/{projectId}
-        //group.MapGet("/{projectId}", async (IMediator mediator, string projectId) =>
-        //{
-        //    var query = new GetProjectByIdQuery(projectId);
-        //    var response = await mediator.SendRequest(query);
-        //    return response.ToMinimalApiResult();
-        //})
-        //.WithName("GetProjectById")
-        //.WithSummary("Retrieve project details")
-        //.WithDescription("Fetches details of a specific project.")
-        //.Produces<Result<ProjectResponse>>()
-        //.Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-        //.Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        // GET /projects/{projectId}
+        group.MapGet("/{projectId}", async ([FromServices] IMediator mediator, string projectId) =>
+        {
+            var query = new GetProjectByIdQuery(projectId);
+            var response = await mediator.SendRequest(query);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("GetProjectById")
+        .WithSummary("Retrieve project details")
+        .WithDescription("Fetches details of a specific project.")
+        .Produces<Result<ProjectResponse>>()
+        .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-        //// PUT /projects/{projectId}
-        //group.MapPut("/{projectId}", async (IMediator mediator, string projectId, UpdateProjectCommand command) =>
-        //{
-        //    command = command with { ProjectId = projectId };
-        //    var response = await mediator.SendRequest(command);
-        //    return response.ToMinimalApiResult();
-        //})
-        //.WithName("UpdateProject")
-        //.WithSummary("Update a project")
-        //.WithDescription("Updates information of an existing project.")
-        //.Produces<Result<ProjectResponse>>()
-        //.Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-        //.Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-        //.Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        // PUT /projects/{projectId}
+        group.MapPut("/{projectId}", async ([FromServices] IMediator mediator, string projectId, UpdateProjectCommand command) =>
+        {
+            command = command with { ProjectId = projectId };
+            var response = await mediator.SendRequest(command);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("UpdateProject")
+        .WithSummary("Update a project")
+        .WithDescription("Updates information of an existing project.")
+        .Produces<Result<ProjectResponse>>()
+        .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+        .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-        //// DELETE /projects/{projectId}
-        //group.MapDelete("/{projectId}", async (IMediator mediator, string projectId) =>
-        //{
-        //    var command = new DeleteProjectCommand(projectId);
-        //    var response = await mediator.SendRequest(command);
-        //    return response.ToMinimalApiResult();
-        //})
-        //.WithName("DeleteProject")
-        //.WithSummary("Delete a project")
-        //.WithDescription("Deletes an existing project.")
-        //.Produces<Result>(StatusCodes.Status204NoContent)
-        //.Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-        //.Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        // DELETE /projects/{projectId}
+        group.MapDelete("/{projectId}", async ([FromServices] IMediator mediator, string projectId) =>
+        {
+            var command = new DeleteProjectCommand(projectId);
+            var response = await mediator.SendRequest(command);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("DeleteProject")
+        .WithSummary("Delete a project")
+        .WithDescription("Deletes an existing project.")
+        .Produces<Result>(StatusCodes.Status204NoContent)
+        .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
-        //// PUT /projects/{projectId}/status
-        //group.MapPut("/{projectId}/status", async (IMediator mediator, string projectId, UpdateProjectStatusCommand command) =>
-        //{
-        //    command = command with { ProjectId = projectId };
-        //    var response = await mediator.SendRequest(command);
-        //    return response.ToMinimalApiResult();
-        //})
-        //.WithName("UpdateProjectStatus")
-        //.WithSummary("Activate or deactivate a project")
-        //.WithDescription("Updates the status of a project.")
-        //.Produces<Result<ProjectResponse>>()
-        //.Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-        //.Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-        //.Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        // PUT /projects/{projectId}/status
+        group.MapPut("/{projectId}/status", async ([FromServices] IMediator mediator, string projectId, UpdateProjectStatusCommand command) =>
+        {
+            command = command with { ProjectId = projectId };
+            var response = await mediator.SendRequest(command);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("UpdateProjectStatus")
+        .WithSummary("Activate or deactivate a project")
+        .WithDescription("Updates the status of a project.")
+        .Produces<Result<ProjectResponse>>()
+        .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+        .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
         return app;
     }

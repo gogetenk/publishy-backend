@@ -1,4 +1,4 @@
-﻿using Ardalis.Result;
+using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Domain.ValueObjects;

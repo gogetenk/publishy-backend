@@ -1,4 +1,4 @@
-﻿using Publishy.Application.Domain.AggregateRoots;
+using Publishy.Application.Domain.AggregateRoots;
 
 namespace Publishy.Application.Interfaces;
 

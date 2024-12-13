@@ -1,4 +1,4 @@
-﻿using Ardalis.Result;
+using Ardalis.Result;
 using Publishy.Application.Domain.ValueObjects;
 
 namespace Publishy.Application.Domain.AggregateRoots;

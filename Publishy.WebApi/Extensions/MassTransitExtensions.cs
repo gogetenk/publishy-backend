@@ -1,4 +1,4 @@
-﻿using MassTransit;
+using MassTransit;
 using Publishy.Application.UseCases.Queries.GetProjects;
 
 namespace Publishy.WebApi;
