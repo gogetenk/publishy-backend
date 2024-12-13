@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.UseCases.Commands.ActivateMarketingPlan;
 using Publishy.Application.UseCases.Commands.CreateMarketingPlan;
 using Publishy.Application.UseCases.Commands.DeactivateMarketingPlan;
@@ -26,7 +27,7 @@ public static class MarketingPlanEndpoints
 
         // GET /marketing-plans
         group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery] int? page, [FromQuery] int? pageSize,
-            [FromQuery] string? projectId, [FromQuery] string? status,
+            [FromQuery] string? projectId, [FromQuery] MarketingPlanStatus? status,
             [FromQuery] DateTime? startDateAfter, [FromQuery] DateTime? startDateBefore) =>
         {
             var query = new GetMarketingPlansQuery(page ?? 1, pageSize ?? 10, projectId, status, startDateAfter, startDateBefore);

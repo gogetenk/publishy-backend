@@ -3,6 +3,7 @@ using MassTransit.Mediator;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Commands.CreatePost;
 using Publishy.Application.Common.Responses;
+using Publishy.Application.Domain.AggregateRoots;
 
 namespace Publishy.Application.UseCases.Queries.GetPosts;
 
@@ -10,7 +11,7 @@ public record GetPostsQuery(
     int Page,
     int PageSize,
     string? ProjectId,
-    string? Status,
+    PostStatus? Status,
     string? Platform,
     DateTime? CreatedAfter,
     DateTime? CreatedBefore

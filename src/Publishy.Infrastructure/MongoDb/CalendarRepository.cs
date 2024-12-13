@@ -24,7 +24,7 @@ public class CalendarRepository : ICalendarRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        CalendarStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         var builder = Builders<Calendar>.Filter;
@@ -35,9 +35,9 @@ public class CalendarRepository : ICalendarRepository
             filter &= builder.Eq(c => c.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(c => c.Status.ToString(), status);
+            filter &= builder.Eq(c => c.Status, status);
         }
 
         return await _calendars.Find(filter)
@@ -68,7 +68,7 @@ public class CalendarRepository : ICalendarRepository
 
     public async Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        CalendarStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         var builder = Builders<Calendar>.Filter;
@@ -79,9 +79,9 @@ public class CalendarRepository : ICalendarRepository
             filter &= builder.Eq(c => c.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(c => c.Status.ToString(), status);
+            filter &= builder.Eq(c => c.Status, status);
         }
 
         return (int)await _calendars.CountDocumentsAsync(filter, cancellationToken: cancellationToken);

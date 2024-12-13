@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Common.Responses;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Commands.CreateProject;
 
@@ -9,7 +10,7 @@ namespace Publishy.Application.UseCases.Queries.GetProjects;
 public record GetProjectsQuery(
     int Page,
     int PageSize,
-    string? Status,
+    ProjectStatus? Status,
     DateTime? CreatedAfter,
     DateTime? CreatedBefore
 ) : Request<Result<GetProjectsResponse>>

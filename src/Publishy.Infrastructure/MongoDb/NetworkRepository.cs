@@ -24,7 +24,7 @@ public class NetworkRepository : INetworkRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        NetworkStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         var builder = Builders<Network>.Filter;
@@ -35,9 +35,9 @@ public class NetworkRepository : INetworkRepository
             filter &= builder.Eq(n => n.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(n => n.Status.ToString(), status);
+            filter &= builder.Eq(n => n.Status, status);
         }
 
         return await _networks.Find(filter)
@@ -68,7 +68,7 @@ public class NetworkRepository : INetworkRepository
 
     public async Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        NetworkStatus? status = null,
         CancellationToken cancellationToken = default)
     {
         var builder = Builders<Network>.Filter;
@@ -79,9 +79,9 @@ public class NetworkRepository : INetworkRepository
             filter &= builder.Eq(n => n.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(n => n.Status.ToString(), status);
+            filter &= builder.Eq(n => n.Status, status);
         }
 
         return (int)await _networks.CountDocumentsAsync(filter, cancellationToken: cancellationToken);

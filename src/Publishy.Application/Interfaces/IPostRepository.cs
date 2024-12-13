@@ -9,7 +9,7 @@ public interface IPostRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        PostStatus? status = null,
         string? platform = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,
@@ -19,7 +19,7 @@ public interface IPostRepository
     Task DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        PostStatus? status = null,
         string? platform = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,

@@ -24,7 +24,7 @@ public class PostRepository : IPostRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        PostStatus? status = null,
         string? platform = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,
@@ -38,9 +38,9 @@ public class PostRepository : IPostRepository
             filter &= builder.Eq(p => p.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (!status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (!string.IsNullOrWhiteSpace(platform))
@@ -86,7 +86,7 @@ public class PostRepository : IPostRepository
 
     public async Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        PostStatus? status = null,
         string? platform = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,
@@ -100,9 +100,9 @@ public class PostRepository : IPostRepository
             filter &= builder.Eq(p => p.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (!string.IsNullOrWhiteSpace(platform))

@@ -1,4 +1,5 @@
 using MassTransit;
+using Publishy.Api.Caching;
 using Publishy.Api.Endpoints;
 using Publishy.Infrastructure;
 using Publishy.WebApi;
@@ -13,6 +14,7 @@ try
     builder.Services.AddOpenApi();
     builder.Services.AddMassTransit();
     builder.ConfigureSwagger();
+    builder.Services.AddOutputCacheWithPolicies();
 
     builder.AddInfrastructure();
 
@@ -21,10 +23,15 @@ try
     app.UseSwaggerAndUI();
     app.MapOpenApi();
     app.UseHttpsRedirection();
+    app.UseOutputCache();
     app.MapDefaultEndpoints();
     app.MapProjectEndpoints();
     app.MapPostEndpoints();
     app.MapMarketingPlanEndpoints();
+    app.MapCalendarEndpoints();
+    app.MapAnalyticsEndpoints();
+    app.MapNetworkEndpoints();
+    app.MapDashboardEndpoints();
 
     app.Run();
 }
@@ -38,4 +45,4 @@ public partial class Program
     protected Program()
     {
     }
-} // Needed for IntegrationTests
+}

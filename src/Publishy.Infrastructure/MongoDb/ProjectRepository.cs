@@ -23,7 +23,7 @@ public class ProjectRepository : IProjectRepository
     public async Task<IEnumerable<Project>> GetAllAsync(
         int page,
         int pageSize,
-        string? status = null,
+        ProjectStatus? status = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,
         CancellationToken cancellationToken = default)
@@ -31,9 +31,9 @@ public class ProjectRepository : IProjectRepository
         var builder = Builders<Project>.Filter;
         var filter = builder.Empty;
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (createdAfter.HasValue)
@@ -79,7 +79,7 @@ public class ProjectRepository : IProjectRepository
     }
 
     public async Task<int> GetTotalCountAsync(
-        string? status = null,
+        ProjectStatus? status = null,
         DateTime? createdAfter = null,
         DateTime? createdBefore = null,
         CancellationToken cancellationToken = default)
@@ -87,9 +87,9 @@ public class ProjectRepository : IProjectRepository
         var builder = Builders<Project>.Filter;
         var filter = builder.Empty;
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (createdAfter.HasValue)

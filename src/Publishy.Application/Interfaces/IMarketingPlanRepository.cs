@@ -9,7 +9,7 @@ public interface IMarketingPlanRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        MarketingPlanStatus? status = null,
         DateTime? startDateAfter = null,
         DateTime? startDateBefore = null,
         CancellationToken cancellationToken = default);
@@ -18,7 +18,7 @@ public interface IMarketingPlanRepository
     Task DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        MarketingPlanStatus? status = null,
         DateTime? startDateAfter = null,
         DateTime? startDateBefore = null,
         CancellationToken cancellationToken = default);

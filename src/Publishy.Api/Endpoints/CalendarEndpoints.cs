@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.UseCases.Commands.CreateCalendar;
 using Publishy.Application.UseCases.Commands.UpdateCalendar;
 using Publishy.Application.UseCases.Queries.GetCalendarById;
@@ -23,7 +24,7 @@ public static class CalendarEndpoints
 
         // GET /calendars
         group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery] int? page, [FromQuery] int? pageSize,
-            [FromQuery] string? projectId, [FromQuery] string? status) =>
+            [FromQuery] string? projectId, [FromQuery] CalendarStatus? status) =>
         {
             var query = new GetCalendarsQuery(page ?? 1, pageSize ?? 10, projectId, status);
             var response = await mediator.SendRequest(query);

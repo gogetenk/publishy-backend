@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Common.Responses;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Commands.CreateNetwork;
 
@@ -10,7 +11,7 @@ public record GetNetworksQuery(
     int Page,
     int PageSize,
     string? ProjectId,
-    string? Status
+    NetworkStatus? Status
 ) : Request<Result<GetNetworksResponse>>;
 
 public class GetNetworksQueryHandler : MediatorRequestHandler<GetNetworksQuery, Result<GetNetworksResponse>>

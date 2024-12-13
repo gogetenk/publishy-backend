@@ -3,14 +3,19 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using Publishy.Application.Domain.AggregateRoots;
+using Publishy.Application.Domain.Entities;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Consumers;
 using Publishy.Infrastructure.Http;
 using Publishy.Infrastructure.Http.Configuration;
 using Publishy.Infrastructure.Messaging;
 using Publishy.Infrastructure.MongoDb;
+using Publishy.Infrastructure.MongoDb.Serializers;
 using Publishy.Infrastructure.SocialMedia;
 using Publishy.Infrastructure.SocialMedia.Configuration;
 
@@ -74,6 +79,48 @@ public static class DependencyInjection
         // MongoDB
         builder.AddMongoDBClient("publishy-db");
         BsonSerializer.RegisterIdGenerator(typeof(Guid), CombGuidGenerator.Instance);
+        BsonClassMap.RegisterClassMap<Project>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+            cm.MapMember(c => c.Status)
+              .SetSerializer(new EnumSerializer<ProjectStatus>(BsonType.String));
+        });
+        BsonClassMap.RegisterClassMap<Post>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+            cm.MapMember(c => c.Status)
+              .SetSerializer(new EnumSerializer<PostStatus>(BsonType.String));
+        });
+        BsonClassMap.RegisterClassMap<MarketingPlan>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+            cm.MapMember(c => c.Status)
+              .SetSerializer(new EnumSerializer<MarketingPlanStatus>(BsonType.String));
+        });
+        BsonClassMap.RegisterClassMap<PublicationAttempt>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+        });
+        BsonClassMap.RegisterClassMap<Network>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+        });
+        BsonClassMap.RegisterClassMap<Calendar>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+        });
+        BsonClassMap.RegisterClassMap<Analytics>(cm =>
+        {
+            cm.AutoMap();
+            cm.MapIdField(p => p.Id);
+        });
+
 
         return builder;
     }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.UseCases.Commands.AddNetworkConnection;
 using Publishy.Application.UseCases.Commands.CreateNetwork;
 using Publishy.Application.UseCases.Commands.RemoveNetworkConnection;
@@ -25,7 +26,7 @@ public static class NetworkEndpoints
 
         // GET /networks
         group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery] int? page, [FromQuery] int? pageSize,
-            [FromQuery] string? projectId, [FromQuery] string? status) =>
+            [FromQuery] string? projectId, [FromQuery] NetworkStatus? status) =>
         {
             var query = new GetNetworksQuery(page ?? 1, pageSize ?? 10, projectId, status);
             var response = await mediator.SendRequest(query);

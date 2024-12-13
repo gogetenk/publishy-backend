@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Common.Responses;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Commands.CreateCalendar;
 
@@ -10,7 +11,7 @@ public record GetCalendarsQuery(
     int Page,
     int PageSize,
     string? ProjectId,
-    string? Status
+    CalendarStatus? Status
 ) : Request<Result<GetCalendarsResponse>>;
 
 public class GetCalendarsQueryHandler : MediatorRequestHandler<GetCalendarsQuery, Result<GetCalendarsResponse>>

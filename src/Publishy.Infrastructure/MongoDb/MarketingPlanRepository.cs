@@ -24,7 +24,7 @@ public class MarketingPlanRepository : IMarketingPlanRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        MarketingPlanStatus? status = null,
         DateTime? startDateAfter = null,
         DateTime? startDateBefore = null,
         CancellationToken cancellationToken = default)
@@ -37,9 +37,9 @@ public class MarketingPlanRepository : IMarketingPlanRepository
             filter &= builder.Eq(p => p.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (startDateAfter.HasValue)
@@ -80,7 +80,7 @@ public class MarketingPlanRepository : IMarketingPlanRepository
 
     public async Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        MarketingPlanStatus? status = null,
         DateTime? startDateAfter = null,
         DateTime? startDateBefore = null,
         CancellationToken cancellationToken = default)
@@ -93,9 +93,9 @@ public class MarketingPlanRepository : IMarketingPlanRepository
             filter &= builder.Eq(p => p.ProjectId, projectId);
         }
 
-        if (!string.IsNullOrWhiteSpace(status))
+        if (status.HasValue)
         {
-            filter &= builder.Eq(p => p.Status.ToString(), status);
+            filter &= builder.Eq(p => p.Status, status);
         }
 
         if (startDateAfter.HasValue)

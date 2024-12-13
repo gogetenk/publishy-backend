@@ -5,7 +5,10 @@ using MassTransit.Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.UseCases.Commands.CreateProject;
 using Publishy.Application.UseCases.Commands.DeleteProject;
 using Publishy.Application.UseCases.Commands.UpdateProject;
@@ -25,7 +28,7 @@ public static class ProjectEndpoints
             .WithOpenApi();
 
         // GET /projects
-        group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery]int? page, [FromQuery] int? pageSize, [FromQuery] string? status, [FromQuery] DateTime? createdAfter, [FromQuery] DateTime? createdBefore) =>
+        group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery]int? page, [FromQuery] int? pageSize, [FromQuery] ProjectStatus? status, [FromQuery] DateTime? createdAfter, [FromQuery] DateTime? createdBefore) =>
         {
             var query = new GetProjectsQuery(page ?? 1, pageSize ?? 10, status, createdAfter, createdBefore);
             var response = await mediator.SendRequest(query);
@@ -36,20 +39,8 @@ public static class ProjectEndpoints
         .WithDescription("Fetches all projects with their details.")
         .Produces<Result<GetProjectsResponse>>()
         .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
-
-        // POST /projects
-        group.MapPost("/", async ([FromServices] IMediator mediator, CreateProjectCommand command) =>
-        {
-            var response = await mediator.SendRequest(command);
-            return response.ToMinimalApiResult();
-        })
-        .WithName("CreateProject")
-        .WithSummary("Create a new project")
-        .WithDescription("Creates a new project with the provided information.")
-        .Produces<Result<Application.UseCases.Commands.CreateProject.ProjectResponse>>(StatusCodes.Status201Created)
-        .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+        .CacheOutput("Projects");
 
         // GET /projects/active
         group.MapGet("/active", async ([FromServices] IMediator mediator) =>
@@ -62,7 +53,8 @@ public static class ProjectEndpoints
         .WithSummary("Retrieve the list of active projects")
         .WithDescription("Fetches only active projects.")
         .Produces<Result<ProjectResponse[]>>()
-        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+        .CacheOutput("Projects");
 
         // GET /projects/{projectId}
         group.MapGet("/{projectId}", async ([FromServices] IMediator mediator, string projectId) =>
@@ -76,13 +68,29 @@ public static class ProjectEndpoints
         .WithDescription("Fetches details of a specific project.")
         .Produces<Result<ProjectResponse>>()
         .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+        .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+        .CacheOutput("Projects");
+
+        // POST /projects
+        group.MapPost("/", async ([FromServices] IMediator mediator, [FromServices] IOutputCacheStore cache, CreateProjectCommand command) =>
+        {
+            var response = await mediator.SendRequest(command);
+            await cache.EvictByTagAsync("projects", default);
+            return response.ToMinimalApiResult();
+        })
+        .WithName("CreateProject")
+        .WithSummary("Create a new project")
+        .WithDescription("Creates a new project with the provided information.")
+        .Produces<Result<ProjectResponse>>(StatusCodes.Status201Created)
+        .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
         .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
         // PUT /projects/{projectId}
-        group.MapPut("/{projectId}", async ([FromServices] IMediator mediator, string projectId, UpdateProjectCommand command) =>
+        group.MapPut("/{projectId}", async ([FromServices] IMediator mediator, [FromServices] IOutputCacheStore cache, string projectId, UpdateProjectCommand command) =>
         {
             command = command with { ProjectId = projectId };
             var response = await mediator.SendRequest(command);
+            await cache.EvictByTagAsync("projects", default);
             return response.ToMinimalApiResult();
         })
         .WithName("UpdateProject")
@@ -94,10 +102,11 @@ public static class ProjectEndpoints
         .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
         // DELETE /projects/{projectId}
-        group.MapDelete("/{projectId}", async ([FromServices] IMediator mediator, string projectId) =>
+        group.MapDelete("/{projectId}", async ([FromServices] IMediator mediator, [FromServices] IOutputCacheStore cache, string projectId) =>
         {
             var command = new DeleteProjectCommand(projectId);
             var response = await mediator.SendRequest(command);
+            await cache.EvictByTagAsync("projects", default);
             return response.ToMinimalApiResult();
         })
         .WithName("DeleteProject")
@@ -108,10 +117,11 @@ public static class ProjectEndpoints
         .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError);
 
         // PUT /projects/{projectId}/status
-        group.MapPut("/{projectId}/status", async ([FromServices] IMediator mediator, string projectId, UpdateProjectStatusCommand command) =>
+        group.MapPut("/{projectId}/status", async ([FromServices] IMediator mediator, [FromServices] IOutputCacheStore cache, string projectId, UpdateProjectStatusCommand command) =>
         {
             command = command with { ProjectId = projectId };
             var response = await mediator.SendRequest(command);
+            await cache.EvictByTagAsync("projects", default);
             return response.ToMinimalApiResult();
         })
         .WithName("UpdateProjectStatus")

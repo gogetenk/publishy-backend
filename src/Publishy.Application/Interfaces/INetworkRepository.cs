@@ -9,13 +9,13 @@ public interface INetworkRepository
         int page,
         int pageSize,
         string? projectId = null,
-        string? status = null,
+        NetworkStatus? status = null,
         CancellationToken cancellationToken = default);
     Task<Network> AddAsync(Network network, CancellationToken cancellationToken = default);
     Task UpdateAsync(Network network, CancellationToken cancellationToken = default);
     Task DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task<int> GetTotalCountAsync(
         string? projectId = null,
-        string? status = null,
+        NetworkStatus? status = null,
         CancellationToken cancellationToken = default);
 }

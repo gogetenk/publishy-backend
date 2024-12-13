@@ -5,6 +5,7 @@ using Publishy.Application.UseCases.Commands.CreatePost;
 using Publishy.IntegrationTests.Fixtures;
 using Publishy.IntegrationTests.Helpers;
 using Publishy.IntegrationTests.Tests.Posts.Helpers;
+using Xunit;
 
 namespace Publishy.IntegrationTests.Tests.Posts;
 

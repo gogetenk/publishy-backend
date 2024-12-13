@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using MassTransit.Mediator;
 using Publishy.Application.Common.Responses;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.Interfaces;
 using Publishy.Application.UseCases.Commands.CreateMarketingPlan;
 
@@ -10,7 +11,7 @@ public record GetMarketingPlansQuery(
     int Page,
     int PageSize,
     string? ProjectId,
-    string? Status,
+    MarketingPlanStatus? Status,
     DateTime? StartDateAfter,
     DateTime? StartDateBefore
 ) : Request<Result<GetMarketingPlansResponse>>;

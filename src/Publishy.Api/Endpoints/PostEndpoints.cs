@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Publishy.Application.Domain.AggregateRoots;
 using Publishy.Application.UseCases.Commands.CancelPost;
 using Publishy.Application.UseCases.Commands.CreatePost;
 using Publishy.Application.UseCases.Commands.DeletePost;
@@ -27,7 +28,7 @@ public static class PostEndpoints
 
         // GET /posts
         group.MapGet("/", async ([FromServices] IMediator mediator, [FromQuery] int? page, [FromQuery] int? pageSize, 
-            [FromQuery] string? projectId, [FromQuery] string? status, [FromQuery] string? platform, 
+            [FromQuery] string? projectId, [FromQuery] PostStatus? status, [FromQuery] string? platform, 
             [FromQuery] DateTime? createdAfter, [FromQuery] DateTime? createdBefore) =>
         {
             var query = new GetPostsQuery(page ?? 1, pageSize ?? 10, projectId, status, platform, createdAfter, createdBefore);
